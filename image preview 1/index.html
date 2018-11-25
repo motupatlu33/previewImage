@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script type='text/javascript'>	
+	$(function(){
+	
+		$("#imageField").change(function(){
+			var file = $("#imageField")[0].files[0];
+			
+			var mySet = new Set(['image/png', 'image/jpeg', 'image/gif', 'image/jpg']);
+			if(mySet.has(file.type)){
+				if(file.size <= 1000000){
+					var reader = new FileReader();
+					reader.onload = function()
+					{
+						var output = document.getElementById('output_image');
+						output.src = reader.result;
+					}
+					reader.readAsDataURL(file);
+				}else {
+					$("#errorMess").html("<div class='error'>Image size must be 1 MB</div>");
+					$("#imageField").val("");
+				}
+			}else {
+				$("#errorMess").html("<div class='error'>Select png, jpeg or gif type image</div>");
+				$("#imageField").val("");
+			}
+		});
+		
+		$("#output_image").click(function(){
+			$("#errorMess").html("");
+			$("#imageField").click();
+		});
+	});
+	</script>
+	<style>
+	#output_image
+	{
+		cursor:pointer;
+		max-width:200px;
+		-webkit-box-shadow: 1px 1px 5px -1px rgba(0,0,0,0.69);
+		-moz-box-shadow: 1px 1px 5px -1px rgba(0,0,0,0.69);
+		box-shadow: 1px 1px 5px -1px rgba(0,0,0,0.69);
+		border:1px solid gray;
+		border-radius:10px;
+		margin-bottom:5px;
+	}
+	.error{
+		max-width:200px;
+		-webkit-box-shadow: 1px 1px 5px -1px rgba(0,0,0,0.69);
+		-moz-box-shadow: 1px 1px 5px -1px rgba(0,0,0,0.69);
+		box-shadow: 1px 1px 5px -1px rgba(0,0,0,0.69);
+		border:1px solid red;
+		padding:10px 5px;
+		color:red;
+		border-radius:5px;
+	}
+	</style>
+</head>
+<body style="margin-top:50px;">
+	<div class="container">
+		<input type="file" style="display:none;" accept=".jpeg,.jpg,.gif,.png" id="imageField"  />
+		<img id="output_image" class="img-thumbnail" src="myimage.png" title="Click here to select image" /><br>
+		<div id="errorMess">
+			<div><b style="font-size:16px;">Click For Select Image</b> <img src="arrow.png" width="30" /></div>
+		</div>
+	</div>
+</body>
+</html>
